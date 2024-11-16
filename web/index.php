@@ -97,16 +97,30 @@ $users = getUserData($pdo);
         }
 
         function deleteUser(id) {
-            if (confirm("Tem certeza que deseja excluir este registro?")) {
-                fetch(`api/delete.php`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ id })
-                }).then(() => location.reload());
+    if (confirm("Tem certeza que deseja excluir este registro?")) {
+        fetch(`api/delete.php`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.success);
+                location.reload();
+            } else {
+                alert(data.error);
             }
-        }
+        })
+        .catch(error => {
+            console.error('Erro ao deletar usuário:', error);
+            alert('Erro ao deletar usuário. Verifique o console para mais detalhes.');
+        });
+    }
+}
+
     </script>
 </head>
 <body>
